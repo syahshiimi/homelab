@@ -12,9 +12,9 @@ Furthermore, I get to learn how to use it to automate many other linux-related t
 
 I've never worked with Ansible before and I believe it would be a good opportunity for me to learn about it. At the same time, managing my  virtual machines and linux containers which were provisioned by Proxmox became a chore. 
 
-For context,  I was based and working remotely late last year in Japan. I asked myself what would it take to bring my homelab with me to Japan if I were to ever re-locate. Beyond my concerns of the homelab as a monolithic physical and application deployment, it occured to me that the homelab itself *was not* idempotent.
+For context,  I was based and working remotely late last year in Japan. I asked myself what would it take to bring my homelab with me to Japan if I were to ever re-locate. Beyond my concerns of the homelab as a monolithic physical and application deployment, it occured to me that the homelab itself *was not* idempotent and definitely not portable. 
 
-Similarly, I had to work on a project that necessitated the provisioning, deployment and management of a group (or cluster) of Raspberry Pi's for an on-site art installation. There was a large overhead of constantly provisioning the correct resources and managing the correct configuration of these Pis. I knew Ansible was a solution to my pains and sorrows but due to time constraints – learning how to use it 
+Similarly, I had to work on a project that necessitated the provisioning, deployment and management of a group (or cluster) of Raspberry Pi's for an on-site art installation. There was a large overhead of constantly provisioning the correct resources and managing the correct configuration of these Pis. I knew Ansible was a solution to my pains and sorrows but due to time constraints – learning how to use it wasn’t a priority. 
 
 I wondered what it could take to achieve an idempotent homelab environment in the event I had to redeploy it again. I don't believe Ansible or automation is a ultimate solution here – rather, I believe that if there can be a way to *reach* that goal; my homelab can be deployed *anytime* and *anywhere*.
 
