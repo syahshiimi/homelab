@@ -1,5 +1,7 @@
 # Homelab
 
+Repository:  https://github.com/syahshiimi/homelab
+
 This is my homelab repository, designed to encapsulate and share my interest in DevOps, GitOps and Software Engineering practice.
 
 This repository was initially spawned from notes, stored within a larger `second-brain` directory for my Obsidian Notes.   It is designed this way is a consequence of attempting to use Obsidian as my personal notes editor and also to write documentation for the homelab. I realised, later on, adopting a monorepo approach might work well for multiple intended use case. For instance, if I were to ever wish the showcase of an application/plugin I've built – folks can *easily* see the other types of work **I can do** 😏
