@@ -55,8 +55,8 @@ The only manual intervention is whenever I am updating an old file or adding a e
 Where all deployment-related code lives. Currently, it is empty. In the future, I intend to have all things deployed such as Argo CD, Tanka, Helm Charts and Terraform code.
 
 ### `forge`
-The `forge` is where all application **development** occurs. As I am pretty interested in OSS and self-hosted applications (no shit Sherlock), I am also interested in some custom plugins or forked branches of an application I am using.
+`forge` uses [nx](https://nx.dev/) as the main monorepo tooling.  The `forge` is where all application **development** occurs. 
 
-I'd like to use this as an opportunity to also showcase any side projects that can then be deployed into my homelab 🔥. As both Full-stack TypeScript and Kotlin developer – I've opted to use [`Nx`](https://nx.dev/getting-started/intro) as a build tool for applications that would live within a monorepo. Nx seems to have a [gradle plugin](https://nx.dev/nx-api/gradle) so that is one of the main reasons why I opted for `Nx`.
+Applications that such open-sourced project forks or applications built as side-projects live in this `nx` monorepo.
 
 `forge` is also where this [site](https://homelab.syahrulanuar.xyz) lives.
