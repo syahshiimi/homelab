@@ -5,9 +5,7 @@ Ideally, the management of the applications that live in the homelab should live
 However, before I can even *think* about provisioning and deploying a kubernetes cluster, I decided to take a few steps back: *how can I automate the provisioning of multiple configurations?*
 
 ## A Solid Foundation: Ansible
-
-![[Homelab Plan And Design]]
-
+![[Homelab Ansible Flow.png]]
 The first step above is to configure a simple Ansible Playbook workflow which would create a stable base to achieve a rapid, re-deployable and ideally idemptotent deployments across nodes.
 
 Furthermore, I get to learn how to use it to automate many other linux-related tasks. Currently these tasks are long-lived in my head therefore **I am the automation**. I would like to capture it as reproducible code.

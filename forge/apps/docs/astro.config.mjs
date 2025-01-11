@@ -3,6 +3,9 @@ import { defineConfig } from 'astro/config';
 import starlight from '@astrojs/starlight';
 import starlightObsidian, { obsidianSidebarGroup } from 'starlight-obsidian'
 
+const codePaths = ['deployment/**', 'forge/**']
+const fileExclusion = ['docs/excalidraw/*.md']
+
 // https://astro.build/config
 export default defineConfig({
 	integrations: [
@@ -16,22 +19,18 @@ export default defineConfig({
 				starlightObsidian({
 					vault: '../../../',
 					skipGeneration: false,
-					// Ignore all code related directories.
-					ignore: ['deployment/**','forge/**'],
+					ignore: [
+						// Ignore all code related directories.
+						...codePaths,
+						...fileExclusion
+					],
 					sidebar: {
-						label: 'docs'
+						label: 'Documentation'
 					},
 				}),
 			],
 			sidebar: [
 				obsidianSidebarGroup,
-
-				// {
-				// 	label: 'Homelab Documentation',
-				// 	autogenerate: {
-				// 		directory: 'notes'
-				// 	}
-				// },
 			],
 		}),
 	],
