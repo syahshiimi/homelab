@@ -1,0 +1,17 @@
+- name: Update packages
+  apt:
+    update_cache: yes
+    upgrade: yes
+
+- name:  Install base packages
+  package:
+    name: "{{ packages }}"
+    state: latest
+
+- name: Disable SSH password authentication
+  lineinfile:
+    path: /etc/ssh/sshd_config
+    regexp: '^#?PasswordAuthentication'
+    line: 'PasswordAuthentication no'
+  become: true
+  notify: restart ssh
