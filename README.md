@@ -29,25 +29,23 @@ README.md
 
 The `documentation` and plugins are synced with my paid Obsidian Sync subscription. In instances where I do want to capture notes – I am free to do from any devices I have which have Obsidian installed. At the same time, the markdown notes written should live and breathe as source of truth for me to share and write documentation for the homelab. 
 
-Therefore I can get the b**enefits of using Obsidian Sync and have it loosely coupled to the process of sharing, documenting and writing code for my homelab**. I am free to add in notes where *whenever* I want to but with `git` I can version control *when* these are deployed and shared.
+Therefore I can get the b**enefits of using Obsidian Sync and have it loosely coupled to the process of sharing, documenting and writing code for my homelab**. I am free to add in notes *whenever* I want to but with `git` I can version control *when* these are deployed and shared.
 
 ---
 ### `Docs` with Starlight
-In the `docs` folder – are the homelab related documentation, written in `md` 
+In the `docs` folder – are the homelab related documentation, written in `md` format. We store all the documentations and sharing posts for my documentation site, which will be built with Starlight.
 
-It's grouped this way in order to utilise this plugin [Starlight for Obsidian](https://starlight-obsidian.vercel.app/) which would allow me to have markdown files within `docs` to be part of the documentation. At the same time, the `md` files are synced via Obsidian Sync. I am free to use a mobile Obsidian app to add new notes in, anytime and anywhere.
-
-In the `docs` folder, we store all the documentations and sharing posts for my documentation site, which will be built with Starlight.
+It's grouped this way in order to utilise this plugin [Starlight for Obsidian](https://starlight-obsidian.vercel.app/) which would allow me to have markdown files within `docs` to be part of the documentation. At the same time, the `md` files are synced via Obsidian Sync. I am free to use a mobile Obsidian app to add new notes in, anytime and anywhere. The only manual intervention is whenever I am updating an old file or adding new ones. The deployment of a new md into a new site build... is still manual. I am perfectly fine with that.
 
 ### `deployment`
-Where all deployment related code lives in. Currently it is empty.
+Where all deployment related code lives in. Currently it is empty. In the future, I intend to have all things deployment such as Argo CD, Tanka, Helm Charts and Terraform code.
 
 ### `forge`
-Where all application **development** occurs. 
+The `forge` is where all application **development** occurs. 
 
 As I am pretty interested in OSS and self-hosted applications (no shit sherlock), I am also interested in some custom plugins or forked branches of an application I am using.
 
 I'd like to use this as an opportunity to also showcase any side-projects that can then be deployed into my homelab 🔥.
 
-As both Full-stack TypeScript and Kotlin developer – I've opted to use [`Nx`](https://nx.dev/getting-started/intro) as a way to consolidate applications that would live within a monorepo.
+As both Full-stack TypeScript and Kotlin developer – I've opted to use [`Nx`](https://nx.dev/getting-started/intro) as a build tool for applications that would live within a monorepo. Nx seems to have a [gradle plugin](https://nx.dev/nx-api/gradle) so that is one of the main reasons why I opted for `Nx`.
 
