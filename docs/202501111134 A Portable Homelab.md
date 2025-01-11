@@ -1,6 +1,10 @@
-After outlining my goals for my homelab [[202412271311 Homelab Goals 2025]], I have thought that was more a *physical* design of how the homelab infrastructure should look like.
+After outlining my goals for my homelab [[202412271311 Homelab Redesign 2025]], I realised that rambling and reflection was was more a *physical* design of how the homelab infrastructure should look like.
 
-Ideally, the management of the applications that live in the homelab should live through Kubernetes. Managing a homelab through Kubernetes might seem like a lot of additional overhead but realistically, introducing Kubernetes as a homelab will not only be a nourishing learning experience but also a career boost to **separate myself from other software engineers**.
+So naturally I thought - wouldn’t it be ideal if the homelab application state could be idempotent? Wouldn’t it also be awesome if I could redeploy my homelab as easy as having smaller, decentralised and portable nodes for compute? 
+
+Ideally, the management of the applications could live in the homelab should live through Kubernetes. Managing a homelab through Kubernetes might seem like a lot of additional overhead but I see some benefits. 
+
+Firstly, introducing Kubernetes as a homelab will not only be a nourishing learning experience but also a career boost to **separate myself from other software engineers**. 
 
 However, before I can even *think* about provisioning and deploying a kubernetes cluster, I decided to take a few steps back: *how can I automate the provisioning of multiple configurations?*
 
