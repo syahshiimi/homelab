@@ -1,0 +1,6 @@
+username: syahshiimi
+packages:
+  - git
+  - vim
+  - tmux
+  - speedtest-cli
