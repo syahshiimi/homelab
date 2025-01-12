@@ -2,7 +2,7 @@ kube_hosts:
   hosts:
     # A test VM, for ansible :)
     debian:
-      ansible_user: syahshiimi
+      ansible_user: "{{ username }}"
       ansible_host: 10.0.10.166
       ansible_connection: ssh
       ansible_ssh_private_key_file: ~/.ssh/debian
@@ -10,9 +10,9 @@ kube_hosts:
       ansible_user: "{{ username }}"
       ansible_host: 10.0.10.45
       ansible_connection: ssh
-      ansible_ssh_private_key_file: ~/.ssh/controlp-pi-home-01
+      ansible_ssh_private_key_file: ~/.ssh/controlp_pi_home_01
     worker_pi_home_01:
       ansible_user: "{{ username }}"
       ansible_host: 10.0.10.33
       ansible_connection: ssh
-      ansible_ssh_private_key_file: ~/.ssh/worker-pi-home-01
+      ansible_ssh_private_key_file: ~/.ssh/worker_pi_home_01
