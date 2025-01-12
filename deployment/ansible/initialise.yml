@@ -1,7 +1,0 @@
----
-- hosts: all
-  become: yes
-  tasks:
-    - include_tasks: tasks/base.yml
-  handlers:
-    - include_tasks: handlers/base.yml
