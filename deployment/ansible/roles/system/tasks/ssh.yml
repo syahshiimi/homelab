@@ -7,12 +7,20 @@
   delegate_to: localhost
   become: false
 
+- name: Check if SSH key already exists for host
+  stat:
+    path: "~/.ssh/{{ inventory_hostname }}"
+  delegate_to: localhost
+  register: ssh_key_exists
+  become: false
+
+# Only generate key if it doesn't exist
 - name: Generate unique ED25519 SSH key per host
   command:
     cmd: "ssh-keygen -o -a 100 -t ed25519 -f ~/.ssh/{{ inventory_hostname }} -C syahrlanuar95@gmail.com -N ''"
-    creates: "~/.ssh/{{ inventory_hostname }}"  # Only runs if key doesn't exist
   delegate_to: localhost
   become: false
+  when: not ssh_key_exists.stat.exists
 
 - name: Ensure target .ssh directory exists
   file:
@@ -23,13 +31,32 @@
     group: "{{ ansible_user }}"
   become: true
 
-- name: Add SSH public key to authorized_keys for the target host
-  authorized_key:
-    user: "{{ ansible_user }}"
-    state: present
-    key: "{{ lookup('file', '~/.ssh/' + inventory_hostname + '.pub') }}"
-  become: true
+# Check if our key is already in authorized_keys
+- name: Check if key is already authorized
+  shell: "grep -f ~/.ssh/{{ inventory_hostname }}.pub /home/{{ ansible_user }}/.ssh/authorized_keys || true"
+  delegate_to: localhost
+  register: key_authorized
+  changed_when: false
+  become: false
 
+# Only copy if key isn't already authorized
+- name: Copy SSH key to remote host
+  command:
+    cmd: "ssh-copy-id -i ~/.ssh/{{ inventory_hostname }} {{ ansible_user }}@{{ ansible_host }}"
+  delegate_to: localhost
+  become: false
+  when: key_authorized.stdout == ""
+
+# Check if SSH config entry already exists
+- name: Check if SSH config entry exists
+  command: "grep -q 'Host {{ inventory_hostname }}' ~/.ssh/config"
+  delegate_to: localhost
+  register: config_exists
+  failed_when: false
+  changed_when: false
+  become: false
+
+# Only create config if it doesn't exist
 - name: Create SSH config entry in the local machine
   blockinfile:
     path: "~/.ssh/config"
@@ -42,16 +69,9 @@
         IdentityFile ~/.ssh/{{ inventory_hostname }}
   delegate_to: localhost
   become: false
+  when: config_exists.rc != 0
 
-- name: Disable SSH password authentication
-  lineinfile:
-    path: /etc/ssh/sshd_config
-    regexp: '^#?PasswordAuthentication'
-    line: 'PasswordAuthentication no'
-  become: true
-  notify: Restart SSH Service
-
-- name: Update SSH configuration to be more secure.
+- name: Update SSH configuration to be more secure
   lineinfile:
     dest: "{{ security_ssh_config_path }}"
     regexp: "{{ item.regexp }}"
