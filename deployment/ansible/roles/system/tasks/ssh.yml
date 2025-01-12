@@ -1,8 +1,79 @@
 ---
+- name: Ensure local .ssh directory exists
+  file:
+    path: "~/.ssh"
+    state: directory
+    mode: '0700'
+  delegate_to: localhost
+  become: false
+
+- name: Generate unique ED25519 SSH key per host
+  command:
+    cmd: "ssh-keygen -o -a 100 -t ed25519 -f ~/.ssh/{{ inventory_hostname }} -C syahrlanuar95@gmail.com -N ''"
+    creates: "~/.ssh/{{ inventory_hostname }}"  # Only runs if key doesn't exist
+  delegate_to: localhost
+  become: false
+
+- name: Ensure target .ssh directory exists
+  file:
+    path: "/home/{{ ansible_user }}/.ssh"
+    state: directory
+    mode: '0700'
+    owner: "{{ ansible_user }}"
+    group: "{{ ansible_user }}"
+  become: true
+
+- name: Add SSH public key to authorized_keys for the target host
+  authorized_key:
+    user: "{{ ansible_user }}"
+    state: present
+    key: "{{ lookup('file', '~/.ssh/' + inventory_hostname + '.pub') }}"
+  become: true
+
+- name: Create SSH config entry in the local machine
+  blockinfile:
+    path: "~/.ssh/config"
+    create: yes
+    mode: '0600'
+    block: |
+      Host {{ inventory_hostname }}
+        HostName {{ ansible_host }}
+        User {{ ansible_user }}
+        IdentityFile ~/.ssh/{{ inventory_hostname }}
+  delegate_to: localhost
+  become: false
+
 - name: Disable SSH password authentication
   lineinfile:
     path: /etc/ssh/sshd_config
     regexp: '^#?PasswordAuthentication'
     line: 'PasswordAuthentication no'
   become: true
+  notify: Restart SSH Service
+
+- name: Update SSH configuration to be more secure.
+  lineinfile:
+    dest: "{{ security_ssh_config_path }}"
+    regexp: "{{ item.regexp }}"
+    line: "{{ item.line }}"
+    state: present
+    validate: 'sshd -T -f %s'
+    mode: 0644
+  with_items:
+    - regexp: "^PasswordAuthentication"
+      line: "PasswordAuthentication {{ security_ssh_password_authentication }}"
+    - regexp: "^PermitRootLogin"
+      line: "PermitRootLogin {{ security_ssh_permit_root_login }}"
+    - regexp: "^Port"
+      line: "Port {{ security_ssh_port }}"
+    - regexp: "^UseDNS"
+      line: "UseDNS {{ security_ssh_usedns }}"
+    - regexp: "^PermitEmptyPasswords"
+      line: "PermitEmptyPasswords {{ security_ssh_permit_empty_password }}"
+    - regexp: "^ChallengeResponseAuthentication"
+      line: "ChallengeResponseAuthentication {{ security_ssh_challenge_response_auth }}"
+    - regexp: "^GSSAPIAuthentication"
+      line: "GSSAPIAuthentication {{ security_ssh_gss_api_authentication }}"
+    - regexp: "^X11Forwarding"
+      line: "X11Forwarding {{ security_ssh_x11_forwarding }}"
   notify: Restart SSH Service
