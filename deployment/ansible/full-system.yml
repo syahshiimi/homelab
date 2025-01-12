@@ -1,12 +1,25 @@
-# Full-system setup, from generating a local private key to support passwordless sh
-# to the hardening of the ssh config
 ---
-- name: Full System Setup
+- name: Initial SSH Setup
   hosts: all
   gather_facts: no
   vars:
+    # Ensures that the local ssh keygen process is done locally, first.
     ansible_connection: local
-    setup_packages: true
-    setup_ssh_config: false
   roles:
-    - base-setup
+    - role: base-setup
+      vars:
+        setup_local_ssh: true
+        setup_packages: false
+        setup_ssh_config: false
+
+# A second play, where all operations are done against the remote hosts.
+- name: System Configuration
+  hosts: all
+  become: yes
+  gather_facts: yes
+  roles:
+    - role: base-setup
+      vars:
+        setup_local_ssh: false
+        setup_packages: true
+        setup_ssh_config: true
