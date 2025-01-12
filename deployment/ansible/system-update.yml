@@ -1,0 +1,11 @@
+---
+- name: System Updates
+  hosts: all
+  become: yes
+  gather_facts: yes
+  roles:
+    - role: base-setup
+      vars:
+        setup_local_ssh: false
+        setup_packages: true
+        setup_ssh_config: false

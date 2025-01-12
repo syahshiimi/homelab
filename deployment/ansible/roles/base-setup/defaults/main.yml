@@ -4,6 +4,7 @@ packages:
   - vim
   - tmux
   - speedtest-cli
+  - curl
 
 security_ssh_config_path: "/etc/ssh/sshd_config"
 security_ssh_port: 22
