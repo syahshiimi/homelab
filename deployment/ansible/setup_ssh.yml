@@ -1,0 +1,41 @@
+---
+- name: Initial SSH Setup
+  hosts: all
+  gather_facts: no
+  vars:
+    ansible_connection: local
+
+  tasks:
+    - name: Ensure local .ssh directory exists
+      file:
+        path: "~/.ssh"
+        state: directory
+        mode: '0700'
+      delegate_to: localhost
+
+    - name: Generate ED25519 SSH key on local machine
+      command:
+        cmd: "ssh-keygen -o -a 100 -t ed25519 -f ~/.ssh/{{ inventory_hostname }} -C syahrlanuar95@gmail.com -N ''"
+        creates: "~/.ssh/{{ inventory_hostname }}"
+      delegate_to: localhost
+
+    - name: Copy SSH key to the target host
+      command: "ssh-copy-id -o StrictHostKeyChecking=no -i ~/.ssh/{{ inventory_hostname }} {{ ansible_user }}@{{ ansible_host }}"
+      delegate_to: localhost
+      register: copy_result
+      failed_when:
+        - copy_result.rc != 0
+        - "'already exists on the remote system' not in copy_result.stderr"
+
+    - name: Create SSH config entry in local machine
+      blockinfile:
+        path: "~/.ssh/config"
+        create: yes
+        mode: '0600'
+        marker: "# {mark} ANSIBLE MANAGED BLOCK FOR {{ inventory_hostname }}"
+        block: |
+          Host {{ inventory_hostname }}
+            HostName {{ ansible_host }}
+            User {{ ansible_user }}
+            IdentityFile ~/.ssh/{{ inventory_hostname }}
+      delegate_to: localhost

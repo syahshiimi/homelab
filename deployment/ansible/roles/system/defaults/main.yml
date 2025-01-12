@@ -5,9 +5,7 @@ packages:
   - tmux
   - speedtest-cli
 
----
-security_ssh_key_name:
-security_ssh_config_path: "/etc/sshd/sshd_config"
+security_ssh_config_path: "/etc/ssh/sshd_config"
 security_ssh_port: 22
 security_ssh_password_authentication: "no"
 security_ssh_permit_root_login: "no"
