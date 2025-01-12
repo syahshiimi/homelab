@@ -1,3 +1,4 @@
+# Adopted from https://github.com/geerlingguy/ansible-role-security/blob/master/tasks/ssh.yml
 ---
 - name: Update SSH configuration to be more secure
   lineinfile:
