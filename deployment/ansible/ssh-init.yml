@@ -1,0 +1,16 @@
+# Initialises the local SSH setup configuration against a target host.
+# The configuration focuses on steps needed to support password-less ssh and only via private keys.
+# 1. Creates an ED25519 Key
+# 2. Copies the public key to the target host
+# 3. Update the `config` entry in the ansible control host
+
+---
+- name: Password-less SSH Initialisation
+  hosts: all
+  gather_facts: no
+  vars:
+    ansible_connection: local
+    setup_packages: false
+    setup_ssh_config: false
+  roles:
+    - base-setup

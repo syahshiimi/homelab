@@ -1,0 +1,12 @@
+---
+- name: Run local SSH setup
+  include_tasks: local_ssh_setup.yml
+  when: setup_local_ssh | default(true)
+
+- name: Update & Install packages
+  include_tasks: package.yml
+  when: setup_packages | default(true)
+
+- name: Harden SSH configuration
+  include_tasks: harden_ssh.yml
+  when: setup_ssh_config | default(true)

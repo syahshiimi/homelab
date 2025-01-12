@@ -1,0 +1,12 @@
+# Full-system setup, from generating a local private key to support passwordless sh
+# to the hardening of the ssh config
+---
+- name: Full System Setup
+  hosts: all
+  gather_facts: no
+  vars:
+    ansible_connection: local
+    setup_packages: true
+    setup_ssh_config: false
+  roles:
+    - base-setup
