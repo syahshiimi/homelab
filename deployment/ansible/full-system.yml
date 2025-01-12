@@ -1,3 +1,6 @@
+# A full system base playbook to initialise a key-only ssh, install packages and the hardening of the SSH.
+# Note that installing this WILL break any pre-existing installs and CAN render your remote host inaccessible.
+# This is because it skips generating
 ---
 - name: Initial SSH Setup
   hosts: all
