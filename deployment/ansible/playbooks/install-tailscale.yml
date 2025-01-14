@@ -6,5 +6,3 @@
         tailscale_authkey: "{{ lookup('file', lookup('env', 'TAILSCALE_KEY')) | trim }}"
         tailscale_args: "--ssh"
         tailscale_tags: ['kube']
-
-
