@@ -1,0 +1,90 @@
+services:
+  code-server:
+    image: lscr.io/linuxserver/code-server:latest
+    container_name: code-server
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Etc/UTC
+      - PASSWORD=password #optional
+      - HASHED_PASSWORD= #optional
+      - SUDO_PASSWORD=password #optional
+      - SUDO_PASSWORD_HASH= #optional
+      - PROXY_DOMAIN=code-server.my.domain #optional
+      - DEFAULT_WORKSPACE=/config/workspace #optional
+    volumes:
+      - /path/to/code-server/config:/config
+    ports:
+      - 8443:8443
+    restart: unless-stopped
+
+  prometheus:
+    image: prom/prometheus
+    container_name: prometheus
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+    restart: unless-stopped
+    user: "0"
+    network_mode: host
+    ports:
+      - 9090:9090
+
+    volumes:
+      - ~/docker/prometheus/config:/etc/prometheus
+      - ~/docker/prometheus/data:/prometheus
+
+  json-exporter:
+    image:  quay.io/prometheuscommunity/json-exporter
+    container_name: json-exporter
+    restart: unless-stopped
+    command:
+      - '--config.file=/data/config/config.yml'
+    ports:
+      - 7979:7979
+    volumes:
+      - ~/docker/json-exporter/config:/data/config
+
+  grafana:
+    image: grafana/grafana-enterprise
+    container_name: grafana
+    user: "0"
+    ports:
+      - 3000:3000
+    restart: unless-stopped
+    environment:
+      - GF_SECURITY_ADMIN_USER=admin
+      - GF_SECURITY_ADMIN_PASSWORD=grafana
+    volumes:
+      - ~/docker/grafana:/var/lib/grafana
+
+  uptime-kuma:
+    image: louislam/uptime-kuma:1
+    container_name: uptime-kuma
+    volumes:
+      - ~/docker/uptimekuma/data:/app/data
+    ports:
+      - 3001:3001
+    restart: unless-stopped
+    network_mode: host
+
+  pve-exporter:
+    image: prompve/prometheus-pve-exporter:latest
+    container_name: pve-exporter
+    ports:
+      - 9221:9221
+    restart: unless-stopped
+    volumes:
+      - ~/docker/pve-exporter/pve.yml:/etc/prometheus/pve.yml
+    labels:
+      org.label-schema.group: monitoring
+
+  adguard-exporter:
+    image: ghcr.io/henrywhitaker3/adguard-exporter:latest
+    container_name: adguard_home_exporter
+    environment:
+      - ADGUARD_SERVERS=${ADGUARD_URL}
+      - ADGUARD_USERNAMES=${ADGUARD_USERNAME}
+      - ADGUARD_PASSWORDS=${ADGUARD_PASSWORD}
+      - INTERVAL=15s
+    ports:
+      - 9618:9618
